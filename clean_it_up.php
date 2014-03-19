@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Clean It Up
-Plugin URI: http://onmouseenter.com/how-to-easily-optimize-and-clean-up-your-wordpress-database/
+Plugin URI: http://wordpress.org/plugins/clean-it-up/
 Description: clean up unwanted tag, category and post revision and optimize wordpress database.
-Version: 0.0.1
+Version: 0.0.2
 Author: onmouseenter
-Author URI: http://onmouseenter.com/
+Author URI: http://onmouseenter.com/how-to-easily-optimize-and-clean-up-your-wordpress-database/
 License: GPLv2
 */
 
@@ -27,4 +27,16 @@ along with this program; if not, please visit <http://www.gnu.org/licenses/>.
 /* Include various files need for major plugin file */
 
 include_once('clean_it_up_create_main_menu.inc.php');
+
+add_filter('plugin_action_links', 'clean_it_up_plugin_settings_link', 10, 2);
+ function clean_it_up_plugin_settings_link($links, $file) {
+
+    if ( $file == 'clean_it_up/clean_it_up.php' ) {
+        /* Insert the setting link */
+        $links['settings'] = sprintf( '<a href="%s">%s</a>', admin_url( 'options-general.php?page=clean_it_up/clean_it_up_create_main_menu.inc.php' ), __( 'Settings', 'clean_it_up' ) );
+        
+    }
+    return $links;
+
+ }
 ?>

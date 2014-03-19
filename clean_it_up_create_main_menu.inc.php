@@ -187,9 +187,7 @@ function clean_it_up_remove_revision_validate_options($input) {
 	$input['remove_trackbacks_comments'] = ( $input['remove_trackbacks_comments'] == 1 ? 1 : 0 );
 	
 	if($input['remove_trackbacks_comments'] == 1) {
-		$wpdb->query( "
-					DELETE FROM $wpdb->comments WHERE comment_type = 'trackback'
-				");
+		$wpdb->query($wpdb->prepare("DELETE FROM $wpdb->comments WHERE comment_type = '%s' ", 'trackback'));
 		$wpdb->query( "
 					DELETE FROM $wpdb->commentmeta WHERE comment_id
 					NOT IN (
@@ -204,9 +202,7 @@ function clean_it_up_remove_revision_validate_options($input) {
 	$input['remove_transient'] = ( $input['remove_transient'] == 1 ? 1 : 0 );
 	
 	if($input['remove_transient'] == 1) {
-		$wpdb->query( "
-					DELETE FROM $wpdb->options WHERE option_name LIKE ('%_transient_%')
-				");
+		$wpdb->query($wpdb->prepare("DELETE FROM $wpdb->options WHERE option_name LIKE %s ", '%_transient_%'));
 	}
 	
 	if ( ! isset( $input['remove_orphaned_postmeta'] ) )
@@ -219,6 +215,14 @@ function clean_it_up_remove_revision_validate_options($input) {
 					LEFT JOIN $wpdb->posts wp ON wp.ID = wpm.post_id
 					WHERE wp.ID IS NULL
 				");
+	}
+	
+	if ( ! isset( $input['remove_rss_cache'] ) )
+		$input['remove_rss_cache'] = null;
+	$input['remove_rss_cache'] = ( $input['remove_rss_cache'] == 1 ? 1 : 0 );
+	
+	if($input['remove_rss_cache'] == 1) {
+		$wpdb->query($wpdb->prepare("DELETE FROM $wpdb->options WHERE option_name LIKE %s ", '_transient_feed_%'));
 	}
 	
 	if ( ! isset( $input['optimize_table'] ) )
@@ -287,6 +291,8 @@ function clean_it_up_settings_page() {
 			<label for="clean_it_up_remove_revision_options[remove_trackbacks_comments]"><?php _e( "Remove all trackback in the database" ); ?></label><br/>
 			<input name='clean_it_up_remove_revision_options[remove_transient]' type="checkbox" value="1" <?php checked( '1', $options['remove_transient'] ); ?> />
 			<label for="clean_it_up_remove_revision_options[remove_transient]"><?php _e( "Remove all transient in the database" ); ?></label><br/>
+			<input name='clean_it_up_remove_revision_options[remove_rss_cache]' type="checkbox" value="1" <?php checked( '1', $options['remove_rss_cache'] ); ?> />
+			<label for="clean_it_up_remove_revision_options[remove_rss_cache]"><?php _e( "Remove all rss cache in the database" ); ?></label><br/>
 			<input name='clean_it_up_remove_revision_options[remove_orphaned_postmeta]' type="checkbox" value="1" <?php checked( '1', $options['remove_orphaned_postmeta'] ); ?> />
 			<label for="clean_it_up_remove_revision_options[remove_orphaned_postmeta]"><?php _e( "Remove all orphaned postmeta in the database" ); ?></label><br/>
 			<input name='clean_it_up_remove_revision_options[optimize_table]' type="checkbox" value="1" <?php checked( '1', $options['optimize_table'] ); ?> />

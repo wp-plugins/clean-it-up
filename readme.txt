@@ -1,9 +1,9 @@
 === clean it up ===
 Contributors: onmouseenter
-Tags: Post, plugin, category, tag, comments, comment, posts, admin, page, pages, wordpress, database, table, optimize
+Tags: Post, plugin, category, tag, comments, comment, posts, admin, page, pages, wordpress, database, table, optimize, feed, rss, cache
 Requires at least: 2.8
-Tested up to: 3.9
-Stable tag: 0.0.1
+Tested up to: 3.8.1
+Stable tag: 0.0.2
 License: GPLv2
 
 Clean It Up is a WordPress database cleanup and optimization plugin which helps you to optimize your wordpress database tables.
@@ -32,6 +32,10 @@ You can visit the main plugin page and leaved your question under comment then I
 Please upgrade immediately to enjoy the new features included in this latest version.
 
 == Changelog ==
+
+= 0.0.2 =
+
+* Incl the remove rss cache feature
 
 = 0.0.1 =
 
