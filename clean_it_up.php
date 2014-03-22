@@ -3,7 +3,7 @@
 Plugin Name: Clean It Up
 Plugin URI: http://wordpress.org/plugins/clean-it-up/
 Description: clean up unwanted tag, category and post revision and optimize wordpress database.
-Version: 0.0.3
+Version: 0.0.4
 Author: onmouseenter
 Author URI: http://onmouseenter.com/how-to-easily-optimize-and-clean-up-your-wordpress-database/
 License: GPLv2
