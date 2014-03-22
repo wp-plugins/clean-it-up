@@ -1,6 +1,6 @@
 === clean it up ===
 Contributors: onmouseenter
-Tags: Post, plugin, category, tag, comments, comment, posts, admin, page, pages, wordpress, database, table, optimize, feed, rss, cache, clean
+Tags: Post, plugin, category, tag, comments, comment, posts, admin, page, pages, wordpress, database, table, optimize, feed, rss, cache
 Requires at least: 2.8
 Tested up to: 3.8.1
 Stable tag: 0.0.3

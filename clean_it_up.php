@@ -29,12 +29,14 @@ along with this program; if not, please visit <http://www.gnu.org/licenses/>.
 include_once('clean_it_up_create_main_menu.inc.php');
 
 add_filter('plugin_action_links', 'clean_it_up_plugin_settings_link', 10, 2);
- function clean_it_up_plugin_settings_link($links, $file) {
+function clean_it_up_plugin_settings_link($links, $file) {
 
-    /* Insert the setting link */
-    $links['tutorial'] = sprintf( '<a href="%s">%s</a>', "http://onmouseenter.com/how-to-easily-optimize-and-clean-up-your-wordpress-database/", __( 'Tutorial', 'clean_it_up' ) );
-
+    if ( $file == 'clean-it-up/clean_it_up.php' ) {
+        /* Insert the setting link */
+        $links['settings'] = sprintf( '<a href="%s">%s</a>', admin_url( 'options-general.php?page=clean-it-up/clean_it_up_create_main_menu.inc.php' ), __( 'Settings', 'clean_it_up' ) );
+        
+    }
     return $links;
 
- }
+}
 ?>
