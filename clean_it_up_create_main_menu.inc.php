@@ -114,6 +114,21 @@ function clean_it_up_remove_revision_validate_options($input) {
    	    $wpdb->query( $query );
 	}
 	
+	if ( ! isset( $input['remove_draft_post'] ) )
+		$input['remove_draft_post'] = null;
+	$input['remove_draft_post'] = ( $input['remove_draft_post'] == 1 ? 1 : 0 );
+	
+	if($input['remove_draft_post'] == 1) {
+		$query = $wpdb->prepare(
+	            "
+	            DELETE a,b,c 
+                FROM $wpdb->posts a 
+	            LEFT JOIN $wpdb->term_relationships b ON (a.ID = b.object_id) 
+	            LEFT JOIN $wpdb->postmeta c ON (a.ID = c.post_id) 
+	            WHERE a.post_status = %s", 'draft' );
+   	    $wpdb->query( $query );
+	}
+
 	if ( ! isset( $input['remove_unapproved_comments'] ) )
 		$input['remove_unapproved_comments'] = null;
 	$input['remove_unapproved_comments'] = ( $input['remove_unapproved_comments'] == 1 ? 1 : 0 );
@@ -245,6 +260,8 @@ function clean_it_up_settings_page() {
 	$options = get_option( 'clean_it_up_remove_revision_options' );
 	$revision_count = "SELECT COUNT(post_type) FROM $wpdb->posts WHERE post_type = 'revision'";
 	$post_revision_count = $wpdb->get_var($revision_count);
+	$draft_count = "SELECT COUNT(post_status) FROM $wpdb->posts WHERE post_status = 'draft'";
+	$post_draft_count = $wpdb->get_var($draft_count);
 	$trash_count = "SELECT COUNT(post_status) FROM $wpdb->posts WHERE post_status = 'trash'";
 	$post_trash_count = $wpdb->get_var($trash_count);
 	$autodraft_count = "SELECT COUNT(post_status) FROM $wpdb->posts WHERE post_status = 'auto-draft'";
@@ -263,7 +280,7 @@ function clean_it_up_settings_page() {
 	<div class="wrap">
 		<div class="intro-clean-it-up">
 			Checked the items that you wish to delete and then click on the 'CLEAN' button to delete them. Once you have deleted those items, the database of your blog
-			will have more storage spaces and thus will speed up the loading time of your blog. For further information on each item below please read the <a href="http://onmouseenter.com/how-to-easily-optimize-and-clean-up-your-wordpress-database/" target="_blank">plugin tutorial page</a>. 
+			will have more storage spaces and thus will speed up the loading time of your blog. For further information on each item below please read the <a href="http://gadgets-code.com/how-to-easily-optimize-and-clean-up-your-wordpress-database" target="_blank">plugin tutorial page</a>. 
 		</div>
 		<h3 class="clean-up-header">Clean Up Database</h3>
 		<form action="options.php" method="post">
@@ -277,6 +294,8 @@ function clean_it_up_settings_page() {
 			<label for="clean_it_up_remove_revision_options[remove_post_revision]"><?php _e( "$post_revision_count revision post(s) in the database" ); ?></label><br/>
 			<input name='clean_it_up_remove_revision_options[remove_autodraft_post]' type="checkbox" value="1" <?php checked( '1', $options['remove_autodraft_post'] ); ?> />
 			<label for="clean_it_up_remove_revision_options[remove_autodraft_post]"><?php _e( "$post_autodraft_count autodraft post(s) in the database" ); ?></label><br/>
+			<input name='clean_it_up_remove_revision_options[remove_draft_post]' type="checkbox" value="1" <?php checked( '1', $options['remove_draft_post'] ); ?> />
+			<label for="clean_it_up_remove_revision_options[remove_draft_post]"><?php _e( "$post_draft_count draft post(s)/page(s) in the database" ); ?></label><br/>	
 			<input name='clean_it_up_remove_revision_options[remove_trash_post]' type="checkbox" value="1" <?php checked( '1', $options['remove_trash_post'] ); ?> />
 			<label for="clean_it_up_remove_revision_options[remove_trash_post]"><?php _e( "$post_trash_count trash posts/pages in the database" ); ?></label><br/>
 			<input name='clean_it_up_remove_revision_options[remove_unapproved_comments]' type="checkbox" value="1" <?php checked( '1', $options['remove_unapproved_comments'] ); ?> />
